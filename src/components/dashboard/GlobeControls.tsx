@@ -200,7 +200,7 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
                                 </div>
                             </div>
                             <div style={styles.colorSectionTitle}>
-                                Click anywhere on the Globe to reset the selection
+                                Click anywhere on the Globe to reset
                             </div>
                         </>
                     }
