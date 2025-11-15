@@ -278,6 +278,7 @@ const Globe: React.FC<GlobeProps> = ({ constellation }) => {
                 onShowAllHoursChange={setShowAllHours}
                 selectedBalloonId={selectedBalloonId}
                 selectedBalloonData={selectedBalloonData}
+                constellationSize={constellation.length}
             />
             <GlobeGL
                 ref={globeEl}

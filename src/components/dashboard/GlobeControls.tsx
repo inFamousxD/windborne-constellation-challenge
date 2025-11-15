@@ -20,6 +20,7 @@ interface GlobeControlsProps {
     onShowAllHoursChange: (value: boolean) => void;
     selectedBalloonId: number | null;
     selectedBalloonData: BalloonPoint[]
+    constellationSize: number
 }
 
 const GlobeControls: React.FC<GlobeControlsProps> = ({
@@ -38,7 +39,8 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
     showAllHours,
     onShowAllHoursChange,
     selectedBalloonId,
-    selectedBalloonData
+    selectedBalloonData,
+    constellationSize
 }) => {
     const [isExpanded, setIsExpanded] = useState(true);
 
@@ -201,6 +203,16 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
                             </div>
                             <div style={styles.colorSectionTitle}>
                                 Click anywhere on the Globe to reset
+                            </div>
+                        </>
+                    }
+                    {
+                        constellationSize == 0 &&
+                        <>
+                            <div style={{ ...styles.colorSectionTitle, color: 'red' }}>
+                                Data could not be fetched. The server might be down.
+                                <br />
+                                Please try again later.
                             </div>
                         </>
                     }
