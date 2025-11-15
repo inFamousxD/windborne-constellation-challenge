@@ -11,3 +11,7 @@ Live on https://infamousxd.github.io/windborne-constellation-challenge/
 Click on a balloon to show it's 24h trajectory!
 
 Using cors.lol to bypass CORS, so I'd avoid being rate limited
+
+## Screenshots:
+![SS1](https://github.com/inFamousxD/windborne-constellation-challenge/blob/main/src/assets/screenshot.png)
+![SS2](https://github.com/inFamousxD/windborne-constellation-challenge/blob/main/src/assets/screenshot_path.png)
