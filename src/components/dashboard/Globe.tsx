@@ -5,6 +5,7 @@ import * as THREE from "three"
 import type { BalloonData, BalloonPosition } from "./Dashboard.types"
 import GlobeControls from "./GlobeControls"
 import texture from '../../assets/8k_earth_nightmap.jpg';
+import * as styles from "./Globe.styles"
 
 interface GlobeProps {
     constellation: BalloonData[];
@@ -253,6 +254,13 @@ const Globe: React.FC<GlobeProps> = ({ constellation }) => {
 
     return (
         <>
+            <div style={{...styles.controlsContainer(true), left: '20px', bottom: '20px', top: 'unset', minWidth: '60px', minHeight: '20px', height: '20px'}}>
+                <div style={styles.controlsHeader(true)}>
+                    <h3 style={styles.controlsTitle}>
+                        <a style={{ color: "white", textDecoration: 'none' }} target="#" title="Source" href="https://github.com/inFamousxD/windborne-constellation-challenge">Source</a>
+                    </h3>
+                </div>
+            </div>
             <GlobeControls
                 autoRotate={autoRotate}
                 onAutoRotateChange={setAutoRotate}

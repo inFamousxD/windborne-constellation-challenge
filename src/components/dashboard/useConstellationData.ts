@@ -20,7 +20,10 @@ export function useConstellationData() {
 
         const requests = Array.from({ length: 24 }, async (_, i) => {
             const hour = String(i).padStart(2, "0");
-            const response = await axios.get<ConstellationSnapshot>(`/api/treasure/${hour}.json`);
+            const apiBase = import.meta.env.DEV
+                ? "/api"
+                : "https://api.cors.lol/?url=https://a.windbornesystems.com";
+            const response = await axios.get<ConstellationSnapshot>(`${apiBase}/treasure/${hour}.json`);
 
             return ({
                 hour: i,
