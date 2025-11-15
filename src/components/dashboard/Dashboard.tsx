@@ -6,13 +6,21 @@ const Dashboard: React.FC<DashboardProps> = (props) => {
     const {
         constellation,
         loading,
+        windData,
+        getWindAt
     } = props;
 
     console.log('constellation', constellation);
 
     return (
         <div>
-            {!loading && <Globe constellation={constellation} />}
+            {!loading && (
+                <Globe 
+                    constellation={constellation} 
+                    windData={windData}
+                    getWindAt={getWindAt}
+                />
+            )}
         </div>
     )
 }

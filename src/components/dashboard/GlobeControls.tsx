@@ -12,15 +12,22 @@ interface GlobeControlsProps {
     onArcColorChange: (value: string) => void;
     pathColor: string;
     onPathColorChange: (value: string) => void;
+    windColor: string;
+    onWindColorChange: (value: string) => void;
     altitudeScale: number;
     onAltitudeScaleChange: (value: number) => void;
     selectedHour: number;
     onSelectedHourChange: (value: number) => void;
     showAllHours: boolean;
     onShowAllHoursChange: (value: boolean) => void;
+    showWindVectors: boolean;
+    onShowWindVectorsChange: (value: boolean) => void;
+    windVectorScale: number;
+    onWindVectorScaleChange: (value: number) => void;
     selectedBalloonId: number | null;
-    selectedBalloonData: BalloonPoint[]
-    constellationSize: number
+    selectedBalloonData: BalloonPoint[];
+    constellationSize: number;
+    hasWindData: boolean;
 }
 
 const GlobeControls: React.FC<GlobeControlsProps> = ({
@@ -32,15 +39,22 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
     onArcColorChange,
     pathColor,
     onPathColorChange,
+    windColor,
+    onWindColorChange,
     altitudeScale,
     onAltitudeScaleChange,
     selectedHour,
     onSelectedHourChange,
     showAllHours,
     onShowAllHoursChange,
+    showWindVectors,
+    onShowWindVectorsChange,
+    windVectorScale,
+    onWindVectorScaleChange,
     selectedBalloonId,
     selectedBalloonData,
-    constellationSize
+    constellationSize,
+    hasWindData
 }) => {
     const [isExpanded, setIsExpanded] = useState(true);
 
@@ -127,6 +141,57 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
                         </label>
                     </div>
 
+                    {/* Wind visualization controls */}
+                    {hasWindData && (
+                        <>
+                            <div style={styles.colorSection}>
+                                <h4 style={styles.colorSectionTitle}>
+                                    Wind Visualization
+                                </h4>
+
+                                {/* Show wind vectors toggle */}
+                                <div style={styles.colorControl}>
+                                    <label style={styles.checkboxLabel}>
+                                        <input
+                                            type="checkbox"
+                                            checked={showWindVectors}
+                                            onChange={(e) => onShowWindVectorsChange(e.target.checked)}
+                                            style={styles.checkbox}
+                                        />
+                                        <span>Show Wind Vectors</span>
+                                    </label>
+                                </div>
+
+                                {/* Wind vector scale */}
+                                <div style={styles.colorControl}>
+                                    <label style={styles.sliderLabel}>
+                                        Vector Scale: {windVectorScale.toFixed(1)}x
+                                    </label>
+                                    <input
+                                        type="range"
+                                        min="0.1"
+                                        max="5.0"
+                                        step="0.1"
+                                        value={windVectorScale}
+                                        onChange={(e) => onWindVectorScaleChange(Number(e.target.value))}
+                                        disabled={!showWindVectors}
+                                        style={!showWindVectors ? styles.disabledSlider : styles.slider}
+                                    />
+                                    <div style={styles.sliderScale}>
+                                        <span>0.1</span>
+                                        <span>5.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style={{ fontSize: '10px' }}>
+                                Wind data is currently STATIC (Nov 15th, 2025, 00 GMT) <br />
+                                Downloaded .grib from NOAA NOMADS API <br />
+                                Currently STATIC as it needs grib2json utility <br />
+                                which will need a backend to process, cache, and convert.
+                            </div> 
+                        </>
+                    )}
+
                     {/* color controls */}
                     <div style={styles.colorSection}>
                         <h4 style={styles.colorSectionTitle}>
@@ -162,7 +227,7 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
                         </div>
 
                         {/* path color */}
-                        <div style={styles.colorControlLast}>
+                        <div style={styles.colorControl}>
                             <label style={styles.colorLabel}>
                                 <span style={styles.colorLabelText}>Path:</span>
                                 <input
@@ -175,9 +240,25 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
                             </label>
                         </div>
 
+                        {/* wind color */}
+                        {hasWindData && (
+                            <div style={styles.colorControlLast}>
+                                <label style={styles.colorLabel}>
+                                    <span style={styles.colorLabelText}>Wind:</span>
+                                    <input
+                                        type="color"
+                                        value={windColor}
+                                        onChange={(e) => onWindColorChange(e.target.value)}
+                                        style={styles.colorPicker}
+                                    />
+                                    <span style={styles.colorValue}>{windColor}</span>
+                                </label>
+                            </div>
+                        )}
                     </div>
+
                     {
-                        selectedBalloonId &&
+                        selectedBalloonId !== null &&
                         <>
                             <div style={styles.colorSection}>
                                 <div style={styles.controlsTitle}>
@@ -207,12 +288,20 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
                         </>
                     }
                     {
-                        constellationSize == 0 &&
+                        constellationSize === 0 &&
                         <>
                             <div style={{ ...styles.colorSectionTitle, color: 'red' }}>
                                 Data could not be fetched. The server might be down.
                                 <br />
                                 Please try again later.
+                            </div>
+                        </>
+                    }
+                    {
+                        !hasWindData &&
+                        <>
+                            <div style={{ ...styles.colorSectionTitle, color: 'orange' }}>
+                                Wind data not loaded.
                             </div>
                         </>
                     }
