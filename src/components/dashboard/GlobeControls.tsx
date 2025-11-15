@@ -49,7 +49,7 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
                 onClick={() => setIsExpanded(!isExpanded)}
             >
                 <h3 style={styles.controlsTitle}>
-                    {isExpanded ? 'Globe Controls' : '⚙️'}
+                    {isExpanded ? 'Globe Controls' : ''}
                 </h3>
                 <span style={styles.collapseIcon(isExpanded)}>
                     ▼
