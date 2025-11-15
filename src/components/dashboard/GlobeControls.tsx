@@ -1,6 +1,7 @@
 import type React from "react"
 import { useState } from "react"
 import * as styles from "./Globe.styles"
+import type { BalloonPoint } from "./Globe";
 
 interface GlobeControlsProps {
     autoRotate: boolean;
@@ -17,6 +18,8 @@ interface GlobeControlsProps {
     onSelectedHourChange: (value: number) => void;
     showAllHours: boolean;
     onShowAllHoursChange: (value: boolean) => void;
+    selectedBalloonId: number | null;
+    selectedBalloonData: BalloonPoint[]
 }
 
 const GlobeControls: React.FC<GlobeControlsProps> = ({
@@ -34,6 +37,8 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
     onSelectedHourChange,
     showAllHours,
     onShowAllHoursChange,
+    selectedBalloonId,
+    selectedBalloonData
 }) => {
     const [isExpanded, setIsExpanded] = useState(true);
 
@@ -116,7 +121,7 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
                                 onChange={(e) => onShowAllHoursChange(e.target.checked)}
                                 style={styles.checkbox}
                             />
-                            <span>Show All Hours</span>
+                            <span>Show All Hours (Intensive)</span>
                         </label>
                     </div>
 
@@ -167,7 +172,38 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
                                 <span style={styles.colorValue}>{pathColor}</span>
                             </label>
                         </div>
+
                     </div>
+                    {
+                        selectedBalloonId &&
+                        <>
+                            <div style={styles.colorSection}>
+                                <div style={styles.controlsTitle}>
+                                    Selected Balloon: #{selectedBalloonId}
+                                </div>
+                                <div style={styles.colorControlLast}>
+                                    <br />
+                                    <label style={styles.colorLabel}>
+                                        <span style={styles.colorLabelText}>Lat: </span>
+                                        <span style={styles.colorValue}>{ selectedBalloonData[0].lat }</span>
+                                    </label>
+                                    <br />
+                                    <label style={styles.colorLabel}>
+                                        <span style={styles.colorLabelText}>Lon: </span>
+                                        <span style={styles.colorValue}>{ selectedBalloonData[0].lng }</span>
+                                    </label>
+                                    <br />
+                                    <label style={styles.colorLabel}>
+                                        <span style={styles.colorLabelText}>Alt: </span>
+                                        <span style={styles.colorValue}>{ selectedBalloonData[0].alt }</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div style={styles.colorSectionTitle}>
+                                Click anywhere on the Globe to reset the selection
+                            </div>
+                        </>
+                    }
                 </div>
             )}
         </div>

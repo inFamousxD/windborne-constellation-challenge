@@ -4,12 +4,13 @@ import GlobeGL from "react-globe.gl"
 import * as THREE from "three"
 import type { BalloonData, BalloonPosition } from "./Dashboard.types"
 import GlobeControls from "./GlobeControls"
+import texture from '../../assets/8k_earth_nightmap.jpg';
 
 interface GlobeProps {
     constellation: BalloonData[];
 }
 
-interface BalloonPoint {
+export interface BalloonPoint {
     id: number;
     lat: number;
     lng: number;
@@ -36,12 +37,13 @@ const Globe: React.FC<GlobeProps> = ({ constellation }) => {
     
     // Control states
     const [autoRotate, setAutoRotate] = useState(false);
-    const [balloonColor, setBalloonColor] = useState('#00d9ff');
-    const [arcColor, setArcColor] = useState('#006bae');
-    const [pathColor, setPathColor] = useState('#7effc5');
+    const [balloonColor, setBalloonColor] = useState('#0080c5');
+    const [arcColor, setArcColor] = useState('#cc4700');
+    const [pathColor, setPathColor] = useState('#00940a');
     const [altitudeScale, setAltitudeScale] = useState(500);
     const [selectedHour, setSelectedHour] = useState(0);
     const [showAllHours, setShowAllHours] = useState(false);
+    const [selectedBalloonData, setSelectedBalloonData] = useState<BalloonPoint[]>([]);
 
     useEffect(() => {
         // Set auto-rotate based on state
@@ -85,7 +87,9 @@ const Globe: React.FC<GlobeProps> = ({ constellation }) => {
         if (selectedBalloonId === null) {
             return currentBalloons;
         }
-        return currentBalloons.filter(b => b.id === selectedBalloonId);
+        const visBalloons =  currentBalloons.filter(b => b.id === selectedBalloonId);
+        setSelectedBalloonData(visBalloons);
+        return visBalloons;
     }, [currentBalloons, selectedBalloonId]);
 
     const balloonArcs = useMemo<ArcData[]>(() => {
@@ -177,14 +181,14 @@ const Globe: React.FC<GlobeProps> = ({ constellation }) => {
     }, []);
 
     const balloonObject = useCallback(() => {
-        const geometry = new THREE.SphereGeometry(0.5, 16, 16);
+        const geometry = new THREE.SphereGeometry(0.8, 16, 16);
         const color = new THREE.Color(balloonColor);
-        const emissive = new THREE.Color(balloonColor).multiplyScalar(0.7);
+        const emissive = new THREE.Color(balloonColor).multiplyScalar(2);
         
         const material = new THREE.MeshLambertMaterial({
             color: color,
             emissive: emissive,
-            emissiveIntensity: 0.3
+            emissiveIntensity: 5
         });
         return new THREE.Mesh(geometry, material);
     }, [balloonColor]);
@@ -200,48 +204,46 @@ const Globe: React.FC<GlobeProps> = ({ constellation }) => {
     const getBalloonTooltip = useCallback((d: any) => {
         return `
             <div style="
-                background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-                border: 2px solid #00d9ff;
-                border-radius: 12px;
-                padding: 16px 20px;
-                color: #e0e6ed;
+                background: #111;
+                border: 1px solid #222;
+                border-radius: 10px;
+                padding: 20px 24px;
+                color: #e2e8f0;
                 font-family: JetBrains Mono;
-                box-shadow: 0 8px 32px rgba(0, 217, 255, 0.3), 0 0 60px rgba(0, 217, 255, 0.1);
-                backdrop-filter: blur(10px);
-                min-width: 200px;
+                backdrop-filter: blur(20px);
+                min-width: 220px;
             ">
                 <div style="
-                    font-size: 18px;
-                    font-weight: bold;
-                    margin-bottom: 12px;
-                    color: #00d9ff;
-                    border-bottom: 1px solid rgba(0, 217, 255, 0.3);
-                    padding-bottom: 8px;
-                    text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+                    font-size: 17px;
+                    font-weight: 600;
+                    margin-bottom: 14px;
+                    color: #0080c5ff;
+                    border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+                    padding-bottom: 10px;
+                    letter-spacing: 0.02em;
                 ">
                     Balloon #${d.id}
                 </div>
-                <div style="font-size: 14px; line-height: 1.8;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                        <span style="color: #7dd3fc;">Latitude:</span>
-                        <span style="font-weight: 600; color: #fafafa;">${d.lat.toFixed(4)}°</span>
+                <div style="font-size: 13px; line-height: 1.8;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="color: #0080c5ff;">Latitude:</span>
+                        <span style="font-weight: 600; color: #f1f5f9;">${d.lat.toFixed(4)}°</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                        <span style="color: #7dd3fc;">Longitude:</span>
-                        <span style="font-weight: 600; color: #fafafa;">${d.lng.toFixed(4)}°</span>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="color: #0080c5ff;">Longitude:</span>
+                        <span style="font-weight: 600; color: #f1f5f9;">${d.lng.toFixed(4)}°</span>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
-                        <span style="color: #7dd3fc;">Altitude:</span>
-                        <span style="font-weight: 600; color: #fbbf24;">${(d.alt * altitudeScale).toFixed(1)} units</span>
+                        <span style="color: #0080c5ff;">Altitude:</span>
+                        <span style="font-weight: 600; color: #c084fc;">${(d.alt * altitudeScale).toFixed(1)} units</span>
                     </div>
                 </div>
                 <div style="
-                    margin-top: 12px;
-                    padding-top: 8px;
-                    border-top: 1px solid rgba(0, 217, 255, 0.3);
-                    font-size: 11px;
-                    color: #7dd3fc;
-                    text-align: center;
+                    margin-top: 14px;
+                    padding-top: 10px;
+                    border-top: 1px solid rgba(139, 92, 246, 0.2);
+                    font-size: 14px;
+                    color: #0080c5ff;
                 ">
                     Click to view trajectory
                 </div>
@@ -266,11 +268,13 @@ const Globe: React.FC<GlobeProps> = ({ constellation }) => {
                 onSelectedHourChange={setSelectedHour}
                 showAllHours={showAllHours}
                 onShowAllHoursChange={setShowAllHours}
+                selectedBalloonId={selectedBalloonId}
+                selectedBalloonData={selectedBalloonData}
             />
             <GlobeGL
                 ref={globeEl}
-                globeImageUrl="https://unpkg.com/three-globe@2.31.1/example/img/earth-night.jpg"
-                bumpImageUrl="https://unpkg.com/three-globe@2.31.1/example/img/earth-topology.png"
+                globeImageUrl={texture}
+                // globeImageUrl={'https://unpkg.com/three-globe@2.31.1/example/img/earth-night.jpg'}
                 backgroundColor="rgba(0,0,0,1)"
                 width={dimensions.width}
                 height={dimensions.height}
@@ -304,9 +308,9 @@ const Globe: React.FC<GlobeProps> = ({ constellation }) => {
                 pathPointLng={(p: any) => p.lng}
                 pathPointAlt={(p: any) => p.alt}
                 pathColor={getPathColor}
-                pathStroke={1}
-                pathDashLength={0.05}
-                pathDashGap={0.01}
+                pathStroke={3}
+                pathDashLength={0.01}
+                pathDashGap={0.005}
                 pathDashAnimateTime={10000}
 
                 // deselect
