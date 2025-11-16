@@ -233,7 +233,7 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
                             <div style={{ ...styles.colorSectionTitle, color: 'red' }}>
                                 Data could not be fetched. The server might be down.
                                 <br />
-                                Please try again later.
+                                Please try again later. (or Refresh!)
                             </div>
                         </>
                     }

@@ -1,6 +1,6 @@
 import type React from "react"
 import type { DashboardProps } from "./Dashboard.types"
-import Globe from "./Globe"
+import Globe from "../globe/Globe"
 
 const Dashboard: React.FC<DashboardProps> = (props) => {
     const {

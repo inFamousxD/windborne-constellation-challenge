@@ -1,6 +1,6 @@
 import Dashboard from "./Dashboard"
-import { useConstellationData } from "./useConstellationData"
-import { useWindData } from "../Wind/useWindData"
+import { useConstellationData } from "../../hooks/useConstellationData"
+import { useWindData } from "../../hooks/useWindData"
 
 const DashboardContainer = () => {
     const {

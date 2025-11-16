@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Abel&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Abel&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 
 * {
     font-family: JetBrains Mono;
@@ -10,21 +10,21 @@
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
 * {
-  scrollbar-width: auto;
-  scrollbar-color: #545454 #2e2e2e;
+    scrollbar-width: auto;
+    scrollbar-color: #545454 #2e2e2e;
 }
 
 /* Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
-  width: 10px;
+    width: 10px;
 }
 
 *::-webkit-scrollbar-track {
-  background: #2e2e2e;
+    background: #2e2e2e;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #545454;
-  border-radius: 10px;
-  border: 4px none #ffffff;
+    background-color: #545454;
+    border-radius: 10px;
+    border: 4px none #ffffff;
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import windDataJson from "../../assets/wind_data.json";
+import windDataJson from "../assets/wind_data.json";
 
 interface WindGrid {
     header: {

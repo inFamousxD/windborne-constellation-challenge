@@ -2,7 +2,7 @@ import type React from "react"
 import { useRef, useEffect, useMemo, useState, useCallback } from "react"
 import GlobeGL from "react-globe.gl"
 import * as THREE from "three"
-import type { BalloonData, BalloonPosition, WindData } from "./Dashboard.types"
+import type { BalloonData, BalloonPosition, WindData } from "../dashboard/Dashboard.types"
 import GlobeControls from "./GlobeControls"
 import texture from '../../assets/8k_earth_nightmap.jpg';
 import * as styles from "./Globe.styles"

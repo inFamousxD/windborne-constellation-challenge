@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import type { BalloonData, BalloonPosition, ConstellationSnapshot } from "./Dashboard.types";
+import type { BalloonData, BalloonPosition, ConstellationSnapshot } from "../components/dashboard/Dashboard.types";
 
 interface ConstellationState {
     constellation: BalloonData[];
