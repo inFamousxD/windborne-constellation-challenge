@@ -192,6 +192,60 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
                         </>
                     )}
 
+                    {
+                        selectedBalloonId !== null ?
+                        <>
+                            <div style={styles.colorSection}>
+                                <div style={styles.controlsTitle}>
+                                    Selected Balloon: #{selectedBalloonId}
+                                </div>
+                                <div style={styles.colorControlLast}>
+                                    <br />
+                                    <label style={styles.colorLabel}>
+                                        <span style={styles.colorLabelText}>Lat: </span>
+                                        <span style={styles.colorValue}>{ selectedBalloonData[0].lat }</span>
+                                    </label>
+                                    <br />
+                                    <label style={styles.colorLabel}>
+                                        <span style={styles.colorLabelText}>Lon: </span>
+                                        <span style={styles.colorValue}>{ selectedBalloonData[0].lng }</span>
+                                    </label>
+                                    <br />
+                                    <label style={styles.colorLabel}>
+                                        <span style={styles.colorLabelText}>Alt: </span>
+                                        <span style={styles.colorValue}>{ selectedBalloonData[0].alt }</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div style={styles.colorSectionTitle}>
+                                Click anywhere on the Globe to reset
+                            </div>
+                        </> :
+                        <div style={{ ...styles.colorSection}}>
+                            <div style={{...styles.colorSectionTitle, color: 'purple'}}>
+                                <strong>Click on a Balloon to show its 24-hour path</strong>
+                            </div>
+                        </div>
+                    }
+                    {
+                        constellationSize === 0 &&
+                        <>
+                            <div style={{ ...styles.colorSectionTitle, color: 'red' }}>
+                                Data could not be fetched. The server might be down.
+                                <br />
+                                Please try again later.
+                            </div>
+                        </>
+                    }
+                    {
+                        !hasWindData &&
+                        <>
+                            <div style={{ ...styles.colorSectionTitle, color: 'orange' }}>
+                                Wind data not loaded.
+                            </div>
+                        </>
+                    }
+
                     {/* color controls */}
                     <div style={styles.colorSection}>
                         <h4 style={styles.colorSectionTitle}>
@@ -256,55 +310,6 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
                             </div>
                         )}
                     </div>
-
-                    {
-                        selectedBalloonId !== null &&
-                        <>
-                            <div style={styles.colorSection}>
-                                <div style={styles.controlsTitle}>
-                                    Selected Balloon: #{selectedBalloonId}
-                                </div>
-                                <div style={styles.colorControlLast}>
-                                    <br />
-                                    <label style={styles.colorLabel}>
-                                        <span style={styles.colorLabelText}>Lat: </span>
-                                        <span style={styles.colorValue}>{ selectedBalloonData[0].lat }</span>
-                                    </label>
-                                    <br />
-                                    <label style={styles.colorLabel}>
-                                        <span style={styles.colorLabelText}>Lon: </span>
-                                        <span style={styles.colorValue}>{ selectedBalloonData[0].lng }</span>
-                                    </label>
-                                    <br />
-                                    <label style={styles.colorLabel}>
-                                        <span style={styles.colorLabelText}>Alt: </span>
-                                        <span style={styles.colorValue}>{ selectedBalloonData[0].alt }</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div style={styles.colorSectionTitle}>
-                                Click anywhere on the Globe to reset
-                            </div>
-                        </>
-                    }
-                    {
-                        constellationSize === 0 &&
-                        <>
-                            <div style={{ ...styles.colorSectionTitle, color: 'red' }}>
-                                Data could not be fetched. The server might be down.
-                                <br />
-                                Please try again later.
-                            </div>
-                        </>
-                    }
-                    {
-                        !hasWindData &&
-                        <>
-                            <div style={{ ...styles.colorSectionTitle, color: 'orange' }}>
-                                Wind data not loaded.
-                            </div>
-                        </>
-                    }
                 </div>
             )}
         </div>

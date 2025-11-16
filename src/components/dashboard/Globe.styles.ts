@@ -14,6 +14,8 @@ export const controlsContainer = (isExpanded: boolean): CSSProperties => ({
     minWidth: isExpanded ? '300px' : 'auto',
     zIndex: 1000,
     transition: 'all 0.3s ease',
+    maxHeight: '75vh',
+    overflow: 'auto'
 });
 
 export const controlsHeader = (isExpanded: boolean): CSSProperties => ({

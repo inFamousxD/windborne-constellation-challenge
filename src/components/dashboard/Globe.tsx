@@ -309,7 +309,7 @@ const Globe: React.FC<GlobeProps> = ({ constellation, windData, getWindAt }) => 
 
     return (
         <>
-            <div style={{...styles.controlsContainer(true), left: '20px', bottom: '20px', top: 'unset', minWidth: '60px', minHeight: '20px', height: '20px'}}>
+            <div style={{...styles.controlsContainer(true), left: '20px', bottom: '20px', top: 'unset', minWidth: '60px', minHeight: '20px', height: '20px', overflow: 'hidden'}}>
                 <div style={styles.controlsHeader(true)}>
                     <h3 style={styles.controlsTitle}>
                         <a style={{ color: "white", textDecoration: 'none' }} target="#" title="Source" href="https://github.com/inFamousxD/windborne-constellation-challenge">Source</a>
