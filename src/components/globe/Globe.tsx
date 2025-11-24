@@ -94,8 +94,14 @@ const Globe: React.FC<GlobeProps> = ({ constellation, windData, getWindAt }) => 
             lat: position[0],
             lng: position[1],
             alt: position[2] / altitudeScale
-        }));
-    }, [constellation, selectedHour, showAllHours, altitudeScale]);
+        })).filter(balloon => {
+            const wind = getWindAt(balloon.lat, balloon.lng);
+            if (wind) {
+                const speed = Math.sqrt(wind.u * wind.u + wind.v * wind.v);
+                if (speed >= speedFilter) return true;
+            }
+        });
+    }, [constellation, selectedHour, showAllHours, altitudeScale, speedFilter]);
 
     const updateSpeedFilter = useCallback((val: number) => {
         setSpeedFilter(val);
@@ -103,14 +109,7 @@ const Globe: React.FC<GlobeProps> = ({ constellation, windData, getWindAt }) => 
 
     const visibleBalloons = useMemo(() => {
         if (selectedBalloonId === null) {
-            return currentBalloons.filter(balloon => {
-                const wind = getWindAt(balloon.lat, balloon.lng);
-                if (wind) {
-                    const speed = Math.sqrt(wind.u * wind.u + wind.v * wind.v);
-                    if (speed >= speedFilter) return true;
-                }
-            }) 
-            // return currentBalloons;
+            return currentBalloons;
         }
         const visBalloons = currentBalloons.filter(b => b.id === selectedBalloonId);
         setSelectedBalloonData(visBalloons);
@@ -119,13 +118,7 @@ const Globe: React.FC<GlobeProps> = ({ constellation, windData, getWindAt }) => 
 
     const balloonArcs = useMemo<ArcData[]>(() => {
         if (selectedBalloonId === null) {
-            return currentBalloons.filter(balloon => {
-                const wind = getWindAt(balloon.lat, balloon.lng);
-                if (wind) {
-                    const speed = Math.sqrt(wind.u * wind.u + wind.v * wind.v);
-                    if (speed >= speedFilter) return true;
-                }
-            }).map(balloon => ({
+            return currentBalloons.map(balloon => ({
                 startLat: balloon.lat,
                 startLng: balloon.lng,
                 endLat: balloon.lat,
