@@ -258,6 +258,8 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
                                 Data could not be fetched. The server might be down.
                                 <br />
                                 Please try again later. (or Refresh!)
+                                <br />
+                                If the problem persists, I might be rate limited by the CORS proxy: Wait ~1-10 minutes and retry again! Sorry!
                             </div>
                         </>
                     }
