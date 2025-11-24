@@ -14,7 +14,7 @@ export default defineConfig({
         proxy: {
             '/api': {
                 target: 'https://a.windbornesystems.com',
-                changeOrigin: true, // disable if data doesnt load
+                // changeOrigin: true, // disable if data doesnt load
                 rewrite: (path) => path.replace(/^\/api/, '')
             }
         }
