@@ -28,6 +28,8 @@ interface GlobeControlsProps {
     selectedBalloonData: BalloonPoint[];
     constellationSize: number;
     hasWindData: boolean;
+    speedFilter: number;
+    updateSpeedFilter: (val: number) => void;
 }
 
 const GlobeControls: React.FC<GlobeControlsProps> = ({
@@ -54,7 +56,9 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
     selectedBalloonId,
     selectedBalloonData,
     constellationSize,
-    hasWindData
+    hasWindData,
+    speedFilter,
+    updateSpeedFilter
 }) => {
     const [isExpanded, setIsExpanded] = useState(true);
 
@@ -180,6 +184,26 @@ const GlobeControls: React.FC<GlobeControlsProps> = ({
                                     <div style={styles.sliderScale}>
                                         <span>0.1</span>
                                         <span>5.0</span>
+                                    </div>
+                                </div>
+
+                                {/* Wind filter */}
+                                <div style={styles.colorControl}>
+                                    <label style={styles.sliderLabel}>
+                                        Filter Balloons by Wind Speed &gt;= {speedFilter.toFixed(1)}m/s
+                                    </label>
+                                    <input
+                                        type="range"
+                                        min="-1"
+                                        max="20"
+                                        step="0.5"
+                                        value={speedFilter}
+                                        onChange={(e) => updateSpeedFilter(Number(e.target.value))}
+                                        style={styles.slider}
+                                    />
+                                    <div style={styles.sliderScale}>
+                                        <span>-1 (disabled)</span>
+                                        <span>20.0</span>
                                     </div>
                                 </div>
                             </div>

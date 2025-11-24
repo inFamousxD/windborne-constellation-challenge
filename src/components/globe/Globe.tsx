@@ -58,6 +58,7 @@ const Globe: React.FC<GlobeProps> = ({ constellation, windData, getWindAt }) => 
     const [showWindVectors, setShowWindVectors] = useState(true);
     const [windVectorScale, setWindVectorScale] = useState(1.0);
     const [selectedBalloonData, setSelectedBalloonData] = useState<BalloonPoint[]>([]);
+    const [speedFilter, setSpeedFilter] = useState<number>(-1);
 
     useEffect(() => {
         if (globeEl.current) {
@@ -96,18 +97,35 @@ const Globe: React.FC<GlobeProps> = ({ constellation, windData, getWindAt }) => 
         }));
     }, [constellation, selectedHour, showAllHours, altitudeScale]);
 
+    const updateSpeedFilter = useCallback((val: number) => {
+        setSpeedFilter(val);
+    }, [speedFilter])
+
     const visibleBalloons = useMemo(() => {
         if (selectedBalloonId === null) {
-            return currentBalloons;
+            return currentBalloons.filter(balloon => {
+                const wind = getWindAt(balloon.lat, balloon.lng);
+                if (wind) {
+                    const speed = Math.sqrt(wind.u * wind.u + wind.v * wind.v);
+                    if (speed >= speedFilter) return true;
+                }
+            }) 
+            // return currentBalloons;
         }
         const visBalloons = currentBalloons.filter(b => b.id === selectedBalloonId);
         setSelectedBalloonData(visBalloons);
         return visBalloons;
-    }, [currentBalloons, selectedBalloonId]);
+    }, [currentBalloons, selectedBalloonId, speedFilter]);
 
     const balloonArcs = useMemo<ArcData[]>(() => {
         if (selectedBalloonId === null) {
-            return currentBalloons.map(balloon => ({
+            return currentBalloons.filter(balloon => {
+                const wind = getWindAt(balloon.lat, balloon.lng);
+                if (wind) {
+                    const speed = Math.sqrt(wind.u * wind.u + wind.v * wind.v);
+                    if (speed >= speedFilter) return true;
+                }
+            }).map(balloon => ({
                 startLat: balloon.lat,
                 startLng: balloon.lng,
                 endLat: balloon.lat,
@@ -130,7 +148,7 @@ const Globe: React.FC<GlobeProps> = ({ constellation, windData, getWindAt }) => 
             }
         }
         return arcs;
-    }, [currentBalloons, constellation, selectedBalloonId, altitudeScale]);
+    }, [currentBalloons, constellation, selectedBalloonId, altitudeScale, speedFilter]);
 
     const trajectoryPath = useMemo<PathPoint[][] | null>(() => {
         if (selectedBalloonId === null && !showAllHours) return null;
@@ -341,6 +359,8 @@ const Globe: React.FC<GlobeProps> = ({ constellation, windData, getWindAt }) => 
                 selectedBalloonData={selectedBalloonData}
                 constellationSize={constellation.length}
                 hasWindData={windData !== null}
+                speedFilter={speedFilter}
+                updateSpeedFilter={updateSpeedFilter}
             />
             <GlobeGL
                 ref={globeEl}
